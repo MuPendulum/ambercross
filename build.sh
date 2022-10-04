@@ -99,6 +99,28 @@ gambatte() {
     popd
 }
 
+supafaust() {
+    core_name="supafaust"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="mednafen_supafaust_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    "$STRIP" --strip-unneeded "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 if [[ -d "$CORE_DIR" ]]; then
     # Clean previously built libraries
     if [[ -d "$BUILD_DIR" ]]; then
@@ -112,5 +134,6 @@ fi
 pushd "$CORE_DIR"
 # Enabled cores
 gambatte
+supafaust
 popd
 create_archive
