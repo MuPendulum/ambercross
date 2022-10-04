@@ -39,9 +39,10 @@ prepare_repo() {
     if [[ ! -d "$1" ]]; then
         git clone --depth=1 "$2"
     else
-        # Clean git repo
+        # Clean and update git repo
         pushd "$1"
         git reset --hard && git clean -xfd
+        git pull
         popd
     fi
 }
