@@ -39,9 +39,10 @@ prepare_repo() {
     if [[ ! -d "$1" ]]; then
         git clone --depth=1 "$2"
     else
-        # Clean git repo
+        # Clean and update git repo
         pushd "$1"
         git reset --hard && git clean -xfd
+        git pull
         popd
     fi
 }
@@ -76,7 +77,27 @@ create_archive() {
 }
 
 # Core build functions
-# FIXME
+gambatte() {
+    core_name="gambatte"
+    git_name="gambatte-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="gambatte_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    "$STRIP" --strip-unneeded "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
 
 if [[ -d "$CORE_DIR" ]]; then
     # Clean previously built libraries
@@ -90,6 +111,6 @@ fi
 
 pushd "$CORE_DIR"
 # Enabled cores
-# FIXME
+gambatte
 popd
 create_archive
