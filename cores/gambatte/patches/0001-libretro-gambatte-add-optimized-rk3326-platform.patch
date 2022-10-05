@@ -1,6 +1,6 @@
 From 92d75db182b063a4dc9f97c1c7d4a5c74a72d4ba Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Mon, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 4 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro gambatte: add optimized rk3326 platform
 
 ---

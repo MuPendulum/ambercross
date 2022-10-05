@@ -1,6 +1,6 @@
 From 3416d68d6a3db1152cb7ea82d34b861ed2558453 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Mon, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 4 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro supafaust: add optimized rk3326 platform
 
 ---
