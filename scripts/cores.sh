@@ -44,6 +44,28 @@ mgba() {
     popd
 }
 
+nestopia() {
+    core_name="nestopia"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="libretro/nestopia_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    make -C libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 supafaust() {
     core_name="supafaust"
     git_name="$core_name"
