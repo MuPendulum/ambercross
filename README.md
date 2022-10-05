@@ -6,7 +6,7 @@ ambercross builds and provides aggressively optimized emulators using a cross-co
 
 ## Install cores
 
-Download and extract `cores.zip` from the [Releases](https://github.com/MuPendulum/ambercross/releases) page.
+Download and extract `cores-yymmdd.zip` from the [Releases](https://github.com/MuPendulum/ambercross/releases) page.
 <br>
 Copy the contents of `cores/` to `/storage/cores/` on your SD card.
 
@@ -31,4 +31,4 @@ Included in `crosstool-ng/` is a ct-ng config which you may use to build a compa
 
 Run the build script `./build.sh`.
 <br>
-Libraries will be copied to `build/` and an archive containing the libraries will be created at `cores.zip`
+Libraries will be copied to `release/` and an archive containing the libraries will be created at `cores-yymmdd.zip`
