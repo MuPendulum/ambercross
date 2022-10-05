@@ -99,6 +99,28 @@ gambatte() {
     popd
 }
 
+mgba() {
+    core_name="mgba"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="mgba_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    "$STRIP" --strip-unneeded "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 supafaust() {
     core_name="supafaust"
     git_name="$core_name"
@@ -156,6 +178,7 @@ fi
 pushd "$CORE_DIR"
 # Enabled cores
 gambatte
+mgba
 supafaust
 snes9x
 popd
