@@ -48,7 +48,7 @@ supafaust() {
     core_name="supafaust"
     git_name="$core_name"
     git_repo="https://github.com/libretro/${git_name}.git"
-    core_lib="mednafen_supafaust_libretro.so"
+    core_lib="beetle_supafaust_libretro.so"
 
     check_folder "$core_name"
     pushd "$core_name"
@@ -58,6 +58,8 @@ supafaust() {
 
     make platform="$BUILD_PLATFORM" clean
     make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_supafaust_libretro.so" "$core_lib"
     strip_lib "$core_lib"
 
     copy_lib "$core_lib"
