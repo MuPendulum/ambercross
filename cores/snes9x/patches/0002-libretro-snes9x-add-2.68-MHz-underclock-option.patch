@@ -1,0 +1,44 @@
+From 744fd2e625a91b79f3d760feb3390b2c37a75f91 Mon Sep 17 00:00:00 2001
+From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
+Date: Tue, 4 Oct 2022 00:00:00 -0000
+Subject: [PATCH] libretro snes9x: add 2.68 MHz underclock option
+
+Reported to improve performance for SA-1 titles such as
+Kirby's Dream Land 3 and Super Mario RPG
+---
+ libretro/libretro.cpp            | 6 ++++++
+ libretro/libretro_core_options.h | 1 +
+ 2 files changed, 7 insertions(+)
+
+diff --git a/libretro/libretro.cpp b/libretro/libretro.cpp
+index 0136b60..cbaa22b 100644
+--- a/libretro/libretro.cpp
++++ b/libretro/libretro.cpp
+@@ -449,6 +449,12 @@ static void update_variables(void)
+             Settings.OneSlowClockCycle  = 6;
+             Settings.TwoClockCycles     = 12;
+         }
++        else if (strcmp(var.value, "8cycles") == 0)
++        {
++            Settings.OneClockCycle      = 8;
++            Settings.OneSlowClockCycle  = 8;
++            Settings.TwoClockCycles     = 12;
++        }
+     }
+ 
+     Settings.MaxSpriteTilesPerLine = 34;
+diff --git a/libretro/libretro_core_options.h b/libretro/libretro_core_options.h
+index d524d36..c75969d 100644
+--- a/libretro/libretro_core_options.h
++++ b/libretro/libretro_core_options.h
+@@ -223,6 +223,7 @@ struct retro_core_option_v2_definition option_defs_us[] = {
+       "hacks",
+       {
+          { "disabled",   NULL },
++         { "8cycles",    "2.68 MHz" },
+          { "light",      "Light" },
+          { "compatible", "Compatible" },
+          { "max",        "Max" },
+-- 
+2.37.3
+
