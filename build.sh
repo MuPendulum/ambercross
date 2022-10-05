@@ -121,6 +121,28 @@ supafaust() {
     popd
 }
 
+snes9x() {
+    core_name="snes9x"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="libretro/snes9x_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    make -C libretro platform="$BUILD_PLATFORM"
+    "$STRIP" --strip-unneeded "$core_lib"
+
+    copy_lib "$core_lib"
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 if [[ -d "$CORE_DIR" ]]; then
     # Clean previously built libraries
     if [[ -d "$BUILD_DIR" ]]; then
@@ -135,5 +157,6 @@ pushd "$CORE_DIR"
 # Enabled cores
 gambatte
 supafaust
+snes9x
 popd
 create_archive
