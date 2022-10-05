@@ -1,0 +1,46 @@
+From 1a8564336728d77341a4d9f5b3c874977471a2c9 Mon Sep 17 00:00:00 2001
+From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
+Date: Wed, 4 Oct 2022 00:00:00 -0000
+Subject: [PATCH] libretro mgba: add optimized rk3326 platform
+
+---
+ Makefile.libretro | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.libretro b/Makefile.libretro
+index d6ca62ce0..ae28dd178 100644
+--- a/Makefile.libretro
++++ b/Makefile.libretro
+@@ -423,6 +423,20 @@ else ifeq ($(platform), miyoo)
+    CFLAGS += -fno-common -ftree-vectorize -funswitch-loops
+    DEFINES += -std=c99
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++   CPUFLAGS := -mcpu=cortex-a35+crypto -Ofast -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   TARGET := $(TARGET_NAME)_libretro.so
++   fpic := -fPIC
++   SHARED := -shared -Wl,--version-script=link.T
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
++   DEFINES += -std=c99 -D_GNU_SOURCE -DHAVE_LOCALE
++   HAVE_VFS_FD = 0
++
+ # Windows
+ else
+    TARGET := $(TARGET_NAME)_libretro.dll
+@@ -435,7 +449,7 @@ endif
+ ifeq ($(DEBUG), 1)
+    CFLAGS += -O0 -g
+ else
+-   CFLAGS += -O3
++   CFLAGS +=
+ endif
+ 
+ DEFINES += -DHAVE_STRNDUP -DHAVE_STRDUP -DDISABLE_THREADING -DMINIMAL_CORE=2
+-- 
+2.37.3
+
