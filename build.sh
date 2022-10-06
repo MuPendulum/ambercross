@@ -22,5 +22,6 @@ mgba
 nestopia
 supafaust
 snes9x
+genesisplusgx
 popd
 create_archive
