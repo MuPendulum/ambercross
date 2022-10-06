@@ -133,3 +133,27 @@ genesisplusgx() {
     popd
     popd
 }
+
+beetlepcefast() {
+    core_name="beetlepcefast"
+    git_name="beetle-pce-fast-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="beetle_pce_fast_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_pce_fast_libretro.so" "$core_lib"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
