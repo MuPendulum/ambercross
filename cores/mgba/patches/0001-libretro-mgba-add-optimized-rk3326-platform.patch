@@ -1,6 +1,6 @@
 From 1a8564336728d77341a4d9f5b3c874977471a2c9 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Wed, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 4 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro mgba: add optimized rk3326 platform
 
 ---

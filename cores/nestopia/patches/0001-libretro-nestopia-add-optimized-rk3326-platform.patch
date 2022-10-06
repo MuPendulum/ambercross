@@ -1,0 +1,46 @@
+From 653f0a7dedb31738bd3abdfd64645255d42accc9 Mon Sep 17 00:00:00 2001
+From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
+Date: Tue, 4 Oct 2022 00:00:00 -0000
+Subject: [PATCH] libretro nestopia: add optimized rk3326 platform
+
+---
+ libretro/Makefile | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/libretro/Makefile b/libretro/Makefile
+index f4c086b..283c98e 100644
+--- a/libretro/Makefile
++++ b/libretro/Makefile
+@@ -541,6 +541,18 @@ else ifeq ($(platform),emscripten)
+ 	TARGET := $(TARGET_NAME)_libretro_$(platform).bc
+ 	STATIC_LINKING = 1
+ 
++# RK3326 devices
++else ifeq ($(platform), rk3326)
++	CPUFLAGS := -mcpu=cortex-a35+crypto -O3 -fno-plt -fno-semantic-interposition -ftracer -fgcse-sm -fgcse-las -fipa-pta -DNDEBUG
++	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++	CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++	TARGET := $(TARGET_NAME)_libretro.so
++	fpic := -fPIC
++	SHARED := -shared -Wl,--version-script=link.T
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++	CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
++	LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -static-libstdc++
++
+ # Windows MSVC 2017 all architectures
+ else ifneq (,$(findstring windows_msvc2017,$(platform)))
+ 
+@@ -732,8 +744,8 @@ ifneq (,$(findstring msvc,$(platform)))
+ CFLAGS   += -MT
+ CXXFLAGS += -MT
+ endif
+-CFLAGS   += -O2 -DNDEBUG
+-CXXFLAGS += -O2 -DNDEBUG
++CFLAGS   += -DNDEBUG
++CXXFLAGS += -DNDEBUG
+ endif
+ 
+ CORE_DIR = ..
+-- 
+2.38.0
+

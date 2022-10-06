@@ -22,7 +22,7 @@ Install packages which provide the following commands required by the build scri
 
 ### Step 2
 
-Ensure you have a cross-compiler in your path and set the correct `TARGET` tuple in `build.sh`.
+Ensure you have a cross-compiler in your path and set the correct `TARGET` tuple in `scripts/variables.sh`.
 <br>
 
 Included in `crosstool-ng/` is a ct-ng config which you may use to build a compatible crosstool-ng toolchain.

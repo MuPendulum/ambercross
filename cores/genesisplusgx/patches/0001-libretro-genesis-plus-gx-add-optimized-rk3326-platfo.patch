@@ -1,19 +1,19 @@
-From 92d75db182b063a4dc9f97c1c7d4a5c74a72d4ba Mon Sep 17 00:00:00 2001
+From f5e08cb7609a9003b045bc0d625c7b65a0707822 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
 Date: Tue, 4 Oct 2022 00:00:00 -0000
-Subject: [PATCH] libretro gambatte: add optimized rk3326 platform
+Subject: [PATCH] libretro genesis plus gx: add optimized rk3326 platform
 
 ---
- Makefile.libretro | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ Makefile.libretro | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index ffaba21..c16a23c 100644
+index ed92c27..65fd83c 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -405,6 +405,19 @@ else ifeq ($(platform), miyoo)
-    CFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
-    CXXFLAGS += $(CFLAGS)
+@@ -488,6 +488,21 @@ else ifeq ($(platform), miyoo)
+    LOW_MEMORY = 1
+    MAX_ROM_SIZE = 16777216
  
 +# RK3326 devices
 +else ifeq ($(platform), rk3326)
@@ -22,16 +22,18 @@ index ffaba21..c16a23c 100644
 +   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
 +   TARGET := $(TARGET_NAME)_libretro.so
 +   fpic := -fPIC
-+   SHARED := -shared -Wl,--version-script=$(version_script)
++   SHARED := -shared -Wl,--version-script=$(CORE_DIR)/libretro/link.T
 +   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
 +   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -static-libstdc++
-+   HAVE_NETWORK = 1
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
++   ENDIANNESS_DEFINES := -DLSB_FIRST -DBYTE_ORDER=LITTLE_ENDIAN -DALIGN_LONG
++   PLATFORM_DEFINES := -DHAVE_ZLIB
++   MAX_ROM_SIZE = 33554432
 +
  # Windows MSVC 2003 Xbox 1
  else ifeq ($(platform), xbox1_msvc2003)
  TARGET := $(TARGET_NAME)_libretro_xdk1.lib
-@@ -647,8 +660,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -772,8 +787,8 @@ ifneq (,$(findstring msvc,$(platform)))
     CFLAGS   += -MT
     CXXFLAGS += -MT
  endif
@@ -41,7 +43,7 @@ index ffaba21..c16a23c 100644
 +   CXXFLAGS += -DNDEBUG
  endif
  
- ifeq (,$(findstring msvc,$(platform)))
+ ifeq ($(SHARED_LIBVORBIS),)
 -- 
-2.37.3
+2.38.0
 

@@ -44,11 +44,33 @@ mgba() {
     popd
 }
 
+nestopia() {
+    core_name="nestopia"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="libretro/nestopia_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    make -C libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 supafaust() {
     core_name="supafaust"
     git_name="$core_name"
     git_repo="https://github.com/libretro/${git_name}.git"
-    core_lib="mednafen_supafaust_libretro.so"
+    core_lib="beetle_supafaust_libretro.so"
 
     check_folder "$core_name"
     pushd "$core_name"
@@ -58,6 +80,8 @@ supafaust() {
 
     make platform="$BUILD_PLATFORM" clean
     make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_supafaust_libretro.so" "$core_lib"
     strip_lib "$core_lib"
 
     copy_lib "$core_lib"
@@ -84,6 +108,52 @@ snes9x() {
 
     copy_lib "$core_lib"
     make -C libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+genesisplusgx() {
+    core_name="genesisplusgx"
+    git_name="Genesis-Plus-GX"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="genesis_plus_gx_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+beetlepcefast() {
+    core_name="beetlepcefast"
+    git_name="beetle-pce-fast-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="beetle_pce_fast_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_pce_fast_libretro.so" "$core_lib"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
     popd
     popd
 }

@@ -19,7 +19,10 @@ pushd "$CORE_DIR"
 # Enabled cores
 gambatte
 mgba
+nestopia
 supafaust
 snes9x
+genesisplusgx
+beetlepcefast
 popd
 create_archive
