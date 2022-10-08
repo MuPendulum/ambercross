@@ -25,5 +25,6 @@ snes9x
 genesisplusgx
 picodrive
 beetlepcefast
+beetlewswan
 popd
 create_archive
