@@ -134,6 +134,29 @@ genesisplusgx() {
     popd
 }
 
+picodrive() {
+    core_name="picodrive"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="picodrive_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    git submodule update --init --recursive
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 beetlepcefast() {
     core_name="beetlepcefast"
     git_name="beetle-pce-fast-libretro"
@@ -150,6 +173,54 @@ beetlepcefast() {
     make platform="$BUILD_PLATFORM"
     # Required by AmberELEC
     mv "mednafen_pce_fast_libretro.so" "$core_lib"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+beetlewswan() {
+    core_name="beetlewswan"
+    git_name="beetle-wswan-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="beetle_wswan_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_wswan_libretro.so" "$core_lib"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+beetlengp() {
+    core_name="beetlengp"
+    git_name="beetle-ngp-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="beetle_ngp_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_ngp_libretro.so" "$core_lib"
     strip_lib "$core_lib"
 
     copy_lib "$core_lib"
