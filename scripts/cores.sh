@@ -134,6 +134,29 @@ genesisplusgx() {
     popd
 }
 
+picodrive() {
+    core_name="picodrive"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="picodrive_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    git submodule update --init --recursive
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 beetlepcefast() {
     core_name="beetlepcefast"
     git_name="beetle-pce-fast-libretro"

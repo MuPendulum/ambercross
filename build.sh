@@ -23,6 +23,7 @@ nestopia
 supafaust
 snes9x
 genesisplusgx
+picodrive
 beetlepcefast
 popd
 create_archive
