@@ -26,5 +26,6 @@ genesisplusgx
 picodrive
 beetlepcefast
 beetlewswan
+beetlengp
 popd
 create_archive

@@ -204,3 +204,27 @@ beetlewswan() {
     popd
     popd
 }
+
+beetlengp() {
+    core_name="beetlengp"
+    git_name="beetle-ngp-libretro"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="beetle_ngp_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    # Required by AmberELEC
+    mv "mednafen_ngp_libretro.so" "$core_lib"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
