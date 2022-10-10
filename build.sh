@@ -27,5 +27,6 @@ picodrive
 beetlepcefast
 beetlewswan
 beetlengp
+pcsxrearmed
 popd
 create_archive

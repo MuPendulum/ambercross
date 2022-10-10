@@ -1,0 +1,64 @@
+From ce81f4644967bd9b1d50515233a512d2ed78496b Mon Sep 17 00:00:00 2001
+From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
+Date: Tue, 4 Oct 2022 00:00:00 -0000
+Subject: [PATCH] libretro pcsx rearmed: add optimized rk3326 platform
+
+---
+ Makefile          |  4 ++--
+ Makefile.libretro | 18 ++++++++++++++++++
+ 2 files changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 87613ee..69b6ede 100644
+--- a/Makefile
++++ b/Makefile
+@@ -9,7 +9,7 @@ else
+ ifeq ($(platform), $(filter $(platform), vita ctr))
+ CFLAGS += -O3 -DNDEBUG
+ else
+-CFLAGS += -O2 -DNDEBUG
++CFLAGS += -DNDEBUG
+ endif
+ endif
+ CXXFLAGS += $(CFLAGS)
+@@ -221,7 +221,7 @@ ifeq "$(THREAD_RENDERING)" "1"
+ CFLAGS += -DTHREAD_RENDERING
+ OBJS += plugins/gpulib/gpulib_thread_if.o
+ endif
+-plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED -O3 
++plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED 
+ CC_LINK = $(CXX)
+ endif
+ 
+diff --git a/Makefile.libretro b/Makefile.libretro
+index 7b9618e..7469b6d 100644
+--- a/Makefile.libretro
++++ b/Makefile.libretro
+@@ -498,6 +498,24 @@ else ifeq ($(platform), emscripten)
+    CFLAGS += -DNO_DYLIB -DNO_SOCKET
+    STATIC_LINKING = 1
+ 
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
++	TARGET := $(TARGET_NAME)_libretro.so
++	ARCH := arm64
++	BUILTIN_GPU = neon
++	HAVE_NEON = 1
++	DYNAREC = ari64
++	fpic := -fPIC
++	ifeq ($(platform), rk3326)
++		CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++	else ifeq ($(platform), rk3399)
++		CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++	endif
++	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -ftree-vectorize -fweb -frename-registers -DNDEBUG
++	CXXFLAGS += $(CFLAGS)
++	LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS)
++
+ # Windows
+ else
+ 	TARGET := $(TARGET_NAME)_libretro.dll
+-- 
+2.38.0
+

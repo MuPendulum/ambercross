@@ -228,3 +228,25 @@ beetlengp() {
     popd
     popd
 }
+
+pcsxrearmed() {
+    core_name="pcsxrearmed"
+    git_name="pcsx_rearmed"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="pcsx_rearmed_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
