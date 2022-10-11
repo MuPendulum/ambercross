@@ -1,12 +1,12 @@
-From 300c61da2623ec219e0885c2e89b9a05fd73cbe3 Mon Sep 17 00:00:00 2001
+From 18e97b69466c16574ce1b62f04d315713ce315ad Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro picodrive: add optimized rk3326 platform
 
 ---
  Makefile          |  2 +-
- Makefile.libretro | 18 ++++++++++++++++--
- 2 files changed, 17 insertions(+), 3 deletions(-)
+ Makefile.libretro | 22 ++++++++++++++++++++--
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile b/Makefile
 index d34fdbca..50cb5670 100644
@@ -22,31 +22,35 @@ index d34fdbca..50cb5670 100644
  cpu/fame/famec.o: CFLAGS += -Od
  endif
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 0a859684..68454c79 100644
+index 0a859684..f574cf02 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -501,6 +501,20 @@ else ifeq ($(platform), miyoo)
+@@ -501,6 +501,24 @@ else ifeq ($(platform), miyoo)
  	HAVE_ARMv6 = 0
  	LOW_MEMORY = 1
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
-+   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
-+   TARGET := $(TARGET_NAME)_libretro.so
-+   ARCH = aarch64
-+   fpic := -fPIC
-+   SHARED := -shared
-+   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -DFAMEC_NO_GOTOS
-+   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -DFAMEC_NO_GOTOS
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
-+   DONT_COMPILE_IN_ZLIB = 1
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
++	TARGET := $(TARGET_NAME)_libretro.so
++	ARCH = aarch64
++	fpic := -fPIC
++	SHARED := -shared
++	DONT_COMPILE_IN_ZLIB = 1
++	CFLAGS += -DFAMEC_NO_GOTOS
++	ifeq ($(platform), rk3326)
++		CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++	else ifeq ($(platform), rk3399)
++		CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++	endif
++	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++	CXXFLAGS += $(CFLAGS)
++	LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS)
 +
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  	NO_GCC := 1
-@@ -693,8 +707,8 @@ else
+@@ -693,8 +711,8 @@ else
  		CFLAGS += -O2 -DNDEBUG
  		CXXFLAGS += -O2 -DNDEBUG
  	else
