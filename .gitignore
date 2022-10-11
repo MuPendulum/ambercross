@@ -8,6 +8,7 @@ cores/beetlepcefast/beetle-pce-fast-libretro/
 cores/beetlewswan/beetle-wswan-libretro/
 cores/gambatte/gambatte-libretro/
 cores/genesisplusgx/Genesis-Plus-GX/
+cores/gpsp/gpsp/
 cores/mgba/mgba/
 cores/nestopia/nestopia/
 cores/pcsxrearmed/pcsx_rearmed/

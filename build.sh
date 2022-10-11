@@ -18,6 +18,7 @@ fi
 pushd "$CORE_DIR"
 # Enabled cores
 gambatte
+gpsp
 mgba
 nestopia
 supafaust
