@@ -1,37 +1,40 @@
-From 92d75db182b063a4dc9f97c1c7d4a5c74a72d4ba Mon Sep 17 00:00:00 2001
+From 27497f151fd9bc9f896bb5a2634c07493920a340 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro gambatte: add optimized rk3326 platform
 
 ---
- Makefile.libretro | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ Makefile.libretro | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index ffaba21..c16a23c 100644
+index ffaba21..d4c8fc1 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -405,6 +405,19 @@ else ifeq ($(platform), miyoo)
+@@ -405,6 +405,22 @@ else ifeq ($(platform), miyoo)
     CFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
     CXXFLAGS += $(CFLAGS)
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers -DNDEBUG
-+   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +   TARGET := $(TARGET_NAME)_libretro.so
 +   fpic := -fPIC
-+   SHARED := -shared -Wl,--version-script=$(version_script)
-+   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -static-libstdc++
-+   HAVE_NETWORK = 1
++   SHARED := -shared -Wl,-version-script=$(version_script)
++   HAVE_NETWORK=1
++   ifeq ($(platform), rk3326)
++      CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   else ifeq ($(platform), rk3399)
++      CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++   endif
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++   CXXFLAGS += $(CFLAGS)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS) -static-libstdc++
 +
  # Windows MSVC 2003 Xbox 1
  else ifeq ($(platform), xbox1_msvc2003)
  TARGET := $(TARGET_NAME)_libretro_xdk1.lib
-@@ -647,8 +660,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -647,8 +663,8 @@ ifneq (,$(findstring msvc,$(platform)))
     CFLAGS   += -MT
     CXXFLAGS += -MT
  endif
@@ -43,5 +46,5 @@ index ffaba21..c16a23c 100644
  
  ifeq (,$(findstring msvc,$(platform)))
 -- 
-2.37.3
+2.38.0
 

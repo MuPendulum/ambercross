@@ -1,6 +1,6 @@
-From ce81f4644967bd9b1d50515233a512d2ed78496b Mon Sep 17 00:00:00 2001
+From 07f7e519eddc5137fd452fd30b3dd6e4ca6e2dbc Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro pcsx rearmed: add optimized rk3326 platform
 
 ---
@@ -31,7 +31,7 @@ index 87613ee..69b6ede 100644
  endif
  
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 7b9618e..7469b6d 100644
+index 7b9618e..cdace30 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
 @@ -498,6 +498,24 @@ else ifeq ($(platform), emscripten)
@@ -41,18 +41,18 @@ index 7b9618e..7469b6d 100644
 +# RK3326 and RK3399 devices
 +else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +	TARGET := $(TARGET_NAME)_libretro.so
++	fpic := -fPIC
 +	ARCH := arm64
 +	BUILTIN_GPU = neon
 +	HAVE_NEON = 1
 +	DYNAREC = ari64
-+	fpic := -fPIC
 +	ifeq ($(platform), rk3326)
 +		CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
 +	else ifeq ($(platform), rk3399)
 +		CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
 +	endif
 +	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers -DNDEBUG
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
 +	CXXFLAGS += $(CFLAGS)
 +	LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS)
 +

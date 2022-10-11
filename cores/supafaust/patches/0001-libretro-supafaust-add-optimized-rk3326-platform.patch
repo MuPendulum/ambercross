@@ -1,36 +1,41 @@
-From 3416d68d6a3db1152cb7ea82d34b861ed2558453 Mon Sep 17 00:00:00 2001
+From d47f902d938df1c963e72982a4c6a3e72bb4a778 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro supafaust: add optimized rk3326 platform
 
 ---
- Makefile | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ Makefile | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 9c0c4c6..7bfd010 100644
+index 9c0c4c6..c6f35cb 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -240,6 +240,18 @@ else ifeq ($(platform), emscripten)
+@@ -240,6 +240,23 @@ else ifeq ($(platform), emscripten)
     TARGET := $(TARGET_NAME)_libretro_$(platform).bc
     STATIC_LINKING = 1
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers -DNDEBUG
-+   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +   TARGET := $(TARGET_NAME)_libretro.so
 +   fpic := -fPIC
-+   SHARED := -shared -Wl,--version-script=link.T
-+   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -pthread
-+   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES) -pthread
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -pthread -static-libstdc++
++   SHARED := -shared -Wl,-version-script=link.T
++   FLAGS += -pthread
++   LDFLAGS += -pthread
++   ifeq ($(platform), rk3326)
++      CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   else ifeq ($(platform), rk3399)
++      CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++   endif
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++   CXXFLAGS += $(CFLAGS)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS) -static-libstdc++
 +
  # Windows MSVC 2003 x86
  else ifeq ($(platform), windows_msvc2003_x86)
  	CC  = cl.exe
-@@ -291,7 +303,7 @@ OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
+@@ -291,7 +308,7 @@ OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
  all: $(TARGET)
  
  ifeq ($(DEBUG),0)
@@ -40,5 +45,5 @@ index 9c0c4c6..7bfd010 100644
     FLAGS += -O0 -g -DDEBUG
  endif
 -- 
-2.37.3
+2.38.0
 
