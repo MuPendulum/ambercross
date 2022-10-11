@@ -1,36 +1,39 @@
-From 946ffc87443ac527a9cf8d683221a92ad323106c Mon Sep 17 00:00:00 2001
+From c92874ff69254c7b73eefd2e6a67e34041b91115 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro beetle ngp: add optimized rk3326 platform
 
 ---
- Makefile | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ Makefile | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index a423a92..fb6a8af 100644
+index a423a92..c05c7ae 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -349,6 +349,18 @@ else ifeq ($(platform), gcw0)
+@@ -349,6 +349,21 @@ else ifeq ($(platform), gcw0)
     SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
     FLAGS += -ffast-math -march=mips32 -mtune=mips32r2 -mhard-float
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
-+   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +   TARGET := $(TARGET_NAME)_libretro.so
 +   fpic := -fPIC
 +   SHARED := -shared -Wl,--version-script=link.T
-+   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto -static-libstdc++
++   ifeq ($(platform), rk3326)
++      CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   else ifeq ($(platform), rk3399)
++      CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++   endif
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++   CXXFLAGS += $(CFLAGS)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS) -static-libstdc++
 +
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  
-@@ -611,8 +623,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -611,8 +626,8 @@ ifneq (,$(findstring msvc,$(platform)))
     CFLAGS   += -MT
     CXXFLAGS += -MT
  endif
