@@ -1,0 +1,16 @@
+# Build output
+release/
+cores-*.zip
+
+# Core repos
+cores/beetlengp/beetle-ngp-libretro/
+cores/beetlepcefast/beetle-pce-fast-libretro/
+cores/beetlewswan/beetle-wswan-libretro/
+cores/gambatte/gambatte-libretro/
+cores/genesisplusgx/Genesis-Plus-GX/
+cores/mgba/mgba/
+cores/nestopia/nestopia/
+cores/pcsxrearmed/pcsx_rearmed/
+cores/picodrive/picodrive/
+cores/snes9x/snes9x/
+cores/supafaust/supafaust/
