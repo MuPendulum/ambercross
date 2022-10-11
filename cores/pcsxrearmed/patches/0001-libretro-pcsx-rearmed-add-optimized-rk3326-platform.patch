@@ -52,7 +52,7 @@ index 7b9618e..7469b6d 100644
 +		CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
 +	endif
 +	LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -ftree-vectorize -fweb -frename-registers -DNDEBUG
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers -DNDEBUG
 +	CXXFLAGS += $(CFLAGS)
 +	LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS)
 +
