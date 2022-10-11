@@ -1,38 +1,41 @@
-From 1a8564336728d77341a4d9f5b3c874977471a2c9 Mon Sep 17 00:00:00 2001
+From 423a91110f81c4249dc7ac7194b87c9f448a5283 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro mgba: add optimized rk3326 platform
 
 ---
- Makefile.libretro | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ Makefile.libretro | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index d6ca62ce0..ae28dd178 100644
+index 108148f45..fff39ffc8 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -423,6 +423,20 @@ else ifeq ($(platform), miyoo)
+@@ -417,6 +417,23 @@ else ifeq ($(platform), miyoo)
     CFLAGS += -fno-common -ftree-vectorize -funswitch-loops
     DEFINES += -std=c99
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
-+   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
-+   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +   TARGET := $(TARGET_NAME)_libretro.so
 +   fpic := -fPIC
-+   SHARED := -shared -Wl,--version-script=link.T
-+   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+   LDFLAGS += -Wl,-O1,--sort-common,--as-needed -flto=auto
++   SHARED := -shared -Wl,-version-script=link.T
 +   DEFINES += -std=c99 -D_GNU_SOURCE -DHAVE_LOCALE
 +   HAVE_VFS_FD = 0
++   ifeq ($(platform), rk3326)
++      CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++   else ifeq ($(platform), rk3399)
++      CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++   endif
++   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
++   CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -Ofast -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++   CXXFLAGS += $(CFLAGS)
++   LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS)
 +
  # Windows
  else
     TARGET := $(TARGET_NAME)_libretro.dll
-@@ -435,7 +449,7 @@ endif
+@@ -429,7 +446,7 @@ endif
  ifeq ($(DEBUG), 1)
     CFLAGS += -O0 -g
  else
@@ -42,5 +45,5 @@ index d6ca62ce0..ae28dd178 100644
  
  DEFINES += -DHAVE_STRNDUP -DHAVE_STRDUP -DDISABLE_THREADING -DMINIMAL_CORE=2
 -- 
-2.37.3
+2.38.0
 
