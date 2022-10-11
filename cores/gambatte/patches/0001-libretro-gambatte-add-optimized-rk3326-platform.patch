@@ -17,7 +17,7 @@ index ffaba21..c16a23c 100644
  
 +# RK3326 devices
 +else ifeq ($(platform), rk3326)
-+   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -ftree-vectorize -fweb -frename-registers -ftracer -DNDEBUG
++   CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers -DNDEBUG
 +   LTOFLAGS := -flto=auto -ffat-lto-objects -fdevirtualize-at-ltrans
 +   CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
 +   TARGET := $(TARGET_NAME)_libretro.so
