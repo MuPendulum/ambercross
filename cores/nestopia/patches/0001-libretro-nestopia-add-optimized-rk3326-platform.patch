@@ -1,36 +1,39 @@
-From 653f0a7dedb31738bd3abdfd64645255d42accc9 Mon Sep 17 00:00:00 2001
+From ae3617c04090b143e6649ab5080050399ffd1192 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Tue, 11 Oct 2022 00:00:00 -0000
 Subject: [PATCH] libretro nestopia: add optimized rk3326 platform
 
 ---
- libretro/Makefile | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ libretro/Makefile | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/libretro/Makefile b/libretro/Makefile
-index f4c086b..283c98e 100644
+index f4c086b..37073a4 100644
 --- a/libretro/Makefile
 +++ b/libretro/Makefile
-@@ -541,6 +541,18 @@ else ifeq ($(platform),emscripten)
+@@ -541,6 +541,21 @@ else ifeq ($(platform),emscripten)
  	TARGET := $(TARGET_NAME)_libretro_$(platform).bc
  	STATIC_LINKING = 1
  
-+# RK3326 devices
-+else ifeq ($(platform), rk3326)
-+	CPUFLAGS := -mcpu=cortex-a35+crc+crypto -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
-+	LTOFLAGS := -fno-lto
-+	CACHESIZES := --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++# RK3326 and RK3399 devices
++else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
 +	TARGET := $(TARGET_NAME)_libretro.so
 +	fpic := -fPIC
-+	SHARED := -shared -Wl,--version-script=link.T
-+	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+	CXXFLAGS += $(CPUFLAGS) $(LTOFLAGS) $(CACHESIZES)
-+	LDFLAGS += -Wl,-O1,--sort-common,--as-needed -fno-lto -static-libstdc++
++	SHARED := -shared -Wl,-version-script=link.T
++	ifeq ($(platform), rk3326)
++		CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
++	else ifeq ($(platform), rk3399)
++		CPUFLAGS := -mcpu=cortex-a72.cortex-a53+crc+crypto
++	endif
++	LTOFLAGS := -fno-lto
++	CFLAGS += $(CPUFLAGS) $(LTOFLAGS) -O3 -fomit-frame-pointer -fno-semantic-interposition -fipa-pta -fweb -frename-registers
++	CXXFLAGS += $(CFLAGS)
++	LDFLAGS += -Wl,-O1,--sort-common,--as-needed $(LTOFLAGS) -static-libstdc++
 +
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  
-@@ -732,8 +744,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -732,8 +747,8 @@ ifneq (,$(findstring msvc,$(platform)))
  CFLAGS   += -MT
  CXXFLAGS += -MT
  endif
@@ -41,6 +44,14 @@ index f4c086b..283c98e 100644
  endif
  
  CORE_DIR = ..
+@@ -752,6 +767,7 @@ endif
+ DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) $(GCC_FLAGS) $(GCC_WARNINGS) -DNST_NO_ZLIB $(INCFLAGS) $(INCFLAGS_PLATFORM)
+ 
+ CFLAGS += $(fpic) $(DEFINES) $(C_VER)
++CXXFLAGS := $(filter-out $(C_VER),$(CXXFLAGS))
+ CXXFLAGS += $(fpic) $(DEFINES)
+ 
+ INCDIRS := -I$(CORE_DIR) -I$(CORE_DIR)/source
 -- 
 2.38.0
 
