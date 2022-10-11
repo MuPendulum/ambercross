@@ -13,5 +13,6 @@ cores/mgba/mgba/
 cores/nestopia/nestopia/
 cores/pcsxrearmed/pcsx_rearmed/
 cores/picodrive/picodrive/
+cores/sameboy/SameBoy/
 cores/snes9x/snes9x/
 cores/supafaust/supafaust/
