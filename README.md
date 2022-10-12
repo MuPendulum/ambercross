@@ -19,6 +19,12 @@ Included is a simple build script to automatically build all cores; it was creat
 Install packages which provide the following commands required by the build script:
 <br>
 `git bash rsync 7za`
+<br>
+
+Install required libraries for target:
+<br>
+`zlib`
+<br>
 
 ### Step 2
 
