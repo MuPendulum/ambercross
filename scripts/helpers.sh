@@ -21,16 +21,8 @@ prepare_repo() {
 }
 
 apply_patches() {
-    if [[ -d ../"patches" ]]; then
-        if [ -n "$(ls -A ../"patches")" ]; then
+    if [[ -d ../"patches" && -n "$(ls -A ../"patches")" ]]; then
             git apply ../"patches/"*.patch
-        else
-            echo "error: unable to locate any patches"
-            exit 1
-        fi
-    else
-        echo "error: patches directory does not exist"
-        exit 1
     fi
 }
 
