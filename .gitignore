@@ -6,11 +6,14 @@ cores-*.zip
 cores/beetlengp/beetle-ngp-libretro/
 cores/beetlepcefast/beetle-pce-fast-libretro/
 cores/beetlewswan/beetle-wswan-libretro/
+cores/fbneo/FBNeo/
 cores/gambatte/gambatte-libretro/
 cores/genesisplusgx/Genesis-Plus-GX/
+cores/gpsp/gpsp/
 cores/mgba/mgba/
 cores/nestopia/nestopia/
 cores/pcsxrearmed/pcsx_rearmed/
 cores/picodrive/picodrive/
+cores/sameboy/SameBoy/
 cores/snes9x/snes9x/
 cores/supafaust/supafaust/

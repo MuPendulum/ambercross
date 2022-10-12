@@ -22,6 +22,50 @@ gambatte() {
     popd
 }
 
+sameboy() {
+    core_name="sameboy"
+    git_name="SameBoy"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="libretro/sameboy_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    make -C libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -C libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+gpsp() {
+    core_name="gpsp"
+    git_name="$core_name"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="gpsp_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make platform="$BUILD_PLATFORM" clean
+    make platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
 mgba() {
     core_name="mgba"
     git_name="$core_name"
@@ -247,6 +291,28 @@ pcsxrearmed() {
 
     copy_lib "$core_lib"
     make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
+    popd
+    popd
+}
+
+fbneo() {
+    core_name="fbneo"
+    git_name="FBNeo"
+    git_repo="https://github.com/libretro/${git_name}.git"
+    core_lib="src/burner/libretro/fbneo_libretro.so"
+
+    check_folder "$core_name"
+    pushd "$core_name"
+    prepare_repo "$git_name" "$git_repo"
+    pushd "$git_name"
+    apply_patches
+
+    make -C src/burner/libretro platform="$BUILD_PLATFORM" clean
+    make -C src/burner/libretro platform="$BUILD_PLATFORM"
+    strip_lib "$core_lib"
+
+    copy_lib "$core_lib"
+    make -C src/burner/libretro platform="$BUILD_PLATFORM" clean
     popd
     popd
 }

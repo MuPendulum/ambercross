@@ -18,6 +18,8 @@ fi
 pushd "$CORE_DIR"
 # Enabled cores
 gambatte
+sameboy
+gpsp
 mgba
 nestopia
 supafaust
@@ -28,5 +30,6 @@ beetlepcefast
 beetlewswan
 beetlengp
 pcsxrearmed
+fbneo
 popd
 create_archive
