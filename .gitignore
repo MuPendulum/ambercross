@@ -6,6 +6,7 @@ cores-*.zip
 cores/beetlengp/beetle-ngp-libretro/
 cores/beetlepcefast/beetle-pce-fast-libretro/
 cores/beetlewswan/beetle-wswan-libretro/
+cores/fbneo/FBNeo/
 cores/gambatte/gambatte-libretro/
 cores/genesisplusgx/Genesis-Plus-GX/
 cores/gpsp/gpsp/

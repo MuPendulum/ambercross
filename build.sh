@@ -30,5 +30,6 @@ beetlepcefast
 beetlewswan
 beetlengp
 pcsxrearmed
+fbneo
 popd
 create_archive
