@@ -1,6 +1,6 @@
-From 27497f151fd9bc9f896bb5a2634c07493920a340 Mon Sep 17 00:00:00 2001
+From 6cd7835d27a16f4e86e4df94e30735c509897340 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro gambatte: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro gambatte: add optimized rk3326 platform
  1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index ffaba21..d4c8fc1 100644
+index 98ee91b..8f8ce3f 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -405,6 +405,22 @@ else ifeq ($(platform), miyoo)
+@@ -407,6 +407,22 @@ else ifeq ($(platform), miyoo)
     CFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
     CXXFLAGS += $(CFLAGS)
  
@@ -34,7 +34,7 @@ index ffaba21..d4c8fc1 100644
  # Windows MSVC 2003 Xbox 1
  else ifeq ($(platform), xbox1_msvc2003)
  TARGET := $(TARGET_NAME)_libretro_xdk1.lib
-@@ -647,8 +663,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -649,8 +665,8 @@ ifneq (,$(findstring msvc,$(platform)))
     CFLAGS   += -MT
     CXXFLAGS += -MT
  endif
@@ -45,6 +45,3 @@ index ffaba21..d4c8fc1 100644
  endif
  
  ifeq (,$(findstring msvc,$(platform)))
--- 
-2.38.0
-

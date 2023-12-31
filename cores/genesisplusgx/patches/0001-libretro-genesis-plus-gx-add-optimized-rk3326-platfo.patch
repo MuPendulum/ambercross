@@ -1,6 +1,6 @@
-From ccca48ed0d157ad7a26950c25b355cd9dea349e4 Mon Sep 17 00:00:00 2001
+From e36d5ab670ec1f42d9eff91ac9fe6c7f9270994b Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro genesis plus gx: add optimized rk3326 platform
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] libretro genesis plus gx: add optimized rk3326 platform
  1 file changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index ed92c27..e0ca388 100644
+index 58db740..c8437e3 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
 @@ -488,6 +488,24 @@ else ifeq ($(platform), miyoo)
@@ -36,17 +36,14 @@ index ed92c27..e0ca388 100644
  # Windows MSVC 2003 Xbox 1
  else ifeq ($(platform), xbox1_msvc2003)
  TARGET := $(TARGET_NAME)_libretro_xdk1.lib
-@@ -772,8 +790,8 @@ ifneq (,$(findstring msvc,$(platform)))
-    CFLAGS   += -MT
-    CXXFLAGS += -MT
- endif
+@@ -776,8 +794,8 @@ ifeq ($(platform), emscripten)
+    CFLAGS   += -O3 -DNDEBUG
+    CXXFLAGS += -O3 -DNDEBUG
+ else
 -   CFLAGS   += -O2 -DNDEBUG
 -   CXXFLAGS += -O2 -DNDEBUG
 +   CFLAGS   += -DNDEBUG
 +   CXXFLAGS += -DNDEBUG
  endif
+ endif
  
- ifeq ($(SHARED_LIBVORBIS),)
--- 
-2.38.0
-

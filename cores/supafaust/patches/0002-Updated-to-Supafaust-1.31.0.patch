@@ -1,6 +1,6 @@
-From e2b9755e3cc6abbeda6860856dceeb6f127da745 Mon Sep 17 00:00:00 2001
+From d1dec5abdc475e6bc94d775dddff740ec1c88011 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 4 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] Updated to Supafaust 1.31.0
 
 Excluded mouse emulation changes
@@ -16,7 +16,7 @@ Excluded mouse emulation changes
  8 files changed, 44 insertions(+), 13 deletions(-)
 
 diff --git a/mednafen/config.h b/mednafen/config.h
-index 6b5b5b4..190d6b1 100644
+index 8897bb3..318ab76 100644
 --- a/mednafen/config.h
 +++ b/mednafen/config.h
 @@ -9,8 +9,8 @@
@@ -188,6 +188,3 @@ index f12f8a4..dbc2ff1 100644
    case PPU_GSREG_CGADSUB:
  	CGADSUB = value & 0xFF;
  	break;
--- 
-2.37.3
-

@@ -1,6 +1,6 @@
-From 6ddab09169bc8bec7bdde4187ee6647eb33714cc Mon Sep 17 00:00:00 2001
+From fcb2cc0166a5eef0575f74ab244ffc99d9083331 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro beetle pce: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro beetle pce: add optimized rk3326 platform
  1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 981ea8a..46b776c 100644
+index 5b54403..8b458ea 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -377,6 +377,22 @@ else ifeq ($(platform), miyoo)
+@@ -380,6 +380,22 @@ else ifeq ($(platform), miyoo)
     CXXFLAGS += -std=c++11
     CFLAGS += -std=gnu11
  
@@ -34,7 +34,7 @@ index 981ea8a..46b776c 100644
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  
-@@ -630,7 +646,7 @@ endif
+@@ -633,7 +649,7 @@ endif
  ifeq ($(DEBUG),1)
     FLAGS += -O0 -g
  else
@@ -43,6 +43,3 @@ index 981ea8a..46b776c 100644
  endif
  
  ifneq (,$(findstring msvc,$(platform)))
--- 
-2.38.0
-

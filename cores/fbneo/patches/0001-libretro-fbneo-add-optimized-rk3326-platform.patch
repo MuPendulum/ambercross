@@ -1,6 +1,6 @@
-From 2bcceae2898aa41a66293e2b3b4c2597d2e3b4a7 Mon Sep 17 00:00:00 2001
+From 41ff7918f2c8f6f24760498aa6d1e2a5eac4f426 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro fbneo: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro fbneo: add optimized rk3326 platform
  1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/src/burner/libretro/Makefile b/src/burner/libretro/Makefile
-index 4076d897c..346a63fd6 100644
+index 7d7002b..2a50ae2 100644
 --- a/src/burner/libretro/Makefile
 +++ b/src/burner/libretro/Makefile
-@@ -401,6 +401,24 @@ else ifeq ($(platform), emscripten)
+@@ -402,6 +402,24 @@ else ifeq ($(platform), emscripten)
  	EXTERNAL_ZLIB = 1
  	STATIC_LINKING = 1
  
@@ -36,7 +36,7 @@ index 4076d897c..346a63fd6 100644
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  
-@@ -581,8 +599,8 @@ ifeq ($(DEBUG), 1)
+@@ -582,8 +600,8 @@ ifeq ($(DEBUG), 1)
  else
  	ifeq (,$(findstring msvc,$(platform)))
  		# sadly, we can't use -Os for memory constrained systems here, the performance impact is too big
@@ -47,7 +47,7 @@ index 4076d897c..346a63fd6 100644
  	else
  		CFLAGS += -O2 -DNDEBUG
  		CXXFLAGS += -O2 -DNDEBUG
-@@ -591,6 +609,7 @@ endif
+@@ -592,6 +610,7 @@ endif
  
  CFLAGS += $(fpic) $(FBNEO_DEFINES)
  CXXFLAGS += $(fpic) $(FBNEO_DEFINES)
@@ -55,6 +55,3 @@ index 4076d897c..346a63fd6 100644
  LDFLAGS += $(fpic)
  
  ifeq (,$(findstring msvc,$(platform)))
--- 
-2.38.0
-

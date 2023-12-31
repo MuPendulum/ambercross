@@ -1,6 +1,6 @@
-From 9e0420a1fe7a4465b588843664acbb9dc115acf7 Mon Sep 17 00:00:00 2001
+From 53e91ce1f430739e0c1c18960882e0f818665866 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro snes9x: add optimized rk3326 platform
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH] libretro snes9x: add optimized rk3326 platform
  2 files changed, 24 insertions(+), 2 deletions(-)
 
 diff --git a/libretro/Makefile b/libretro/Makefile
-index 85fe350..28b1c4a 100644
+index dcdfb963..0a3d9b4e 100644
 --- a/libretro/Makefile
 +++ b/libretro/Makefile
 @@ -361,6 +361,23 @@ else ifeq ($(platform), emscripten)
@@ -48,7 +48,7 @@ index 85fe350..28b1c4a 100644
  
     ifneq (,$(findstring msvc,$(platform)))
 diff --git a/libretro/Makefile.common b/libretro/Makefile.common
-index 79ae19c..9230c46 100644
+index 6ed99a52..4b9fb078 100644
 --- a/libretro/Makefile.common
 +++ b/libretro/Makefile.common
 @@ -73,4 +73,9 @@ ifneq (,$(findstring win,$(platform)))
@@ -62,6 +62,3 @@ index 79ae19c..9230c46 100644
 +                $(CORE_DIR)/unzip/ioapi.c
  endif
 \ No newline at end of file
--- 
-2.38.0
-

@@ -1,6 +1,6 @@
-From c92874ff69254c7b73eefd2e6a67e34041b91115 Mon Sep 17 00:00:00 2001
+From 7c720e60367738af8a7af0ee3f142b160163f5e3 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro beetle ngp: add optimized rk3326 platform
 
 ---
@@ -8,7 +8,7 @@ Subject: [PATCH] libretro beetle ngp: add optimized rk3326 platform
  1 file changed, 17 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index a423a92..c05c7ae 100644
+index 51012d4..76c7340 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -349,6 +349,21 @@ else ifeq ($(platform), gcw0)
@@ -44,6 +44,3 @@ index a423a92..c05c7ae 100644
  endif
  
  
--- 
-2.38.0
-

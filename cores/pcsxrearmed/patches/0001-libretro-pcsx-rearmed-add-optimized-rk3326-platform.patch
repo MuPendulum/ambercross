@@ -1,6 +1,6 @@
-From 07f7e519eddc5137fd452fd30b3dd6e4ca6e2dbc Mon Sep 17 00:00:00 2001
+From 839a341e7399f0e37ca77fb5470ed41cf69f18e0 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro pcsx rearmed: add optimized rk3326 platform
 
 ---
@@ -9,7 +9,7 @@ Subject: [PATCH] libretro pcsx rearmed: add optimized rk3326 platform
  2 files changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 87613ee..69b6ede 100644
+index 4786a922..ae1eca48 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -9,7 +9,7 @@ else
@@ -20,22 +20,22 @@ index 87613ee..69b6ede 100644
 +CFLAGS += -DNDEBUG
  endif
  endif
- CXXFLAGS += $(CFLAGS)
-@@ -221,7 +221,7 @@ ifeq "$(THREAD_RENDERING)" "1"
+ ifeq ($(DEBUG_ASAN), 1)
+@@ -244,7 +244,7 @@ ifeq "$(THREAD_RENDERING)" "1"
  CFLAGS += -DTHREAD_RENDERING
  OBJS += plugins/gpulib/gpulib_thread_if.o
  endif
 -plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED -O3 
-+plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED 
++plugins/gpu_unai/gpulib_if.o: CFLAGS += -DREARMED
  CC_LINK = $(CXX)
  endif
  
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 7b9618e..cdace30 100644
+index 1169d892..c5ccacc4 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -498,6 +498,24 @@ else ifeq ($(platform), emscripten)
-    CFLAGS += -DNO_DYLIB -DNO_SOCKET
+@@ -548,6 +548,24 @@ else ifeq ($(platform), emscripten)
+    DYNAREC =
     STATIC_LINKING = 1
  
 +# RK3326 and RK3399 devices
@@ -59,6 +59,3 @@ index 7b9618e..cdace30 100644
  # Windows
  else
  	TARGET := $(TARGET_NAME)_libretro.dll
--- 
-2.38.0
-

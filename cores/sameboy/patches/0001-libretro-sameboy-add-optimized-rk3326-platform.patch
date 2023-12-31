@@ -1,6 +1,6 @@
-From 3cae7953ccd2dcd6f01a7a3df372b6a19b9a2957 Mon Sep 17 00:00:00 2001
+From 4b82c09298a15f4a05fa64fef600225097d5659f Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro sameboy: add optimized rk3326 platform
 
 ---
@@ -42,6 +42,3 @@ index 4fec130..6bf9d3f 100644
  endif
  
  include Makefile.common
--- 
-2.38.0
-

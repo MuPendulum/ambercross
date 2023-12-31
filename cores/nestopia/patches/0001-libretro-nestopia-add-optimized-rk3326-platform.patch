@@ -1,6 +1,6 @@
-From ae3617c04090b143e6649ab5080050399ffd1192 Mon Sep 17 00:00:00 2001
+From f8b38663bb8e70e01da829e875448449dacb8c00 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro nestopia: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro nestopia: add optimized rk3326 platform
  1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/libretro/Makefile b/libretro/Makefile
-index f4c086b..37073a4 100644
+index 7cfd5b0..74cefa9 100644
 --- a/libretro/Makefile
 +++ b/libretro/Makefile
-@@ -541,6 +541,21 @@ else ifeq ($(platform),emscripten)
+@@ -543,6 +543,21 @@ else ifeq ($(platform),emscripten)
  	TARGET := $(TARGET_NAME)_libretro_$(platform).bc
  	STATIC_LINKING = 1
  
@@ -33,7 +33,7 @@ index f4c086b..37073a4 100644
  # Windows MSVC 2017 all architectures
  else ifneq (,$(findstring windows_msvc2017,$(platform)))
  
-@@ -732,8 +747,8 @@ ifneq (,$(findstring msvc,$(platform)))
+@@ -734,8 +749,8 @@ ifneq (,$(findstring msvc,$(platform)))
  CFLAGS   += -MT
  CXXFLAGS += -MT
  endif
@@ -44,7 +44,7 @@ index f4c086b..37073a4 100644
  endif
  
  CORE_DIR = ..
-@@ -752,6 +767,7 @@ endif
+@@ -754,6 +769,7 @@ endif
  DEFINES := -D__LIBRETRO__ $(PLATFORM_DEFINES) $(GCC_FLAGS) $(GCC_WARNINGS) -DNST_NO_ZLIB $(INCFLAGS) $(INCFLAGS_PLATFORM)
  
  CFLAGS += $(fpic) $(DEFINES) $(C_VER)
@@ -52,6 +52,3 @@ index f4c086b..37073a4 100644
  CXXFLAGS += $(fpic) $(DEFINES)
  
  INCDIRS := -I$(CORE_DIR) -I$(CORE_DIR)/source
--- 
-2.38.0
-

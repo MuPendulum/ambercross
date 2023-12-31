@@ -1,6 +1,6 @@
-From d47f902d938df1c963e72982a4c6a3e72bb4a778 Mon Sep 17 00:00:00 2001
+From b341ec40fc3c736e036dddeed66d3ad7d29f0dda Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro supafaust: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro supafaust: add optimized rk3326 platform
  1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 9c0c4c6..c6f35cb 100644
+index f34a015..13db4b8 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -240,6 +240,23 @@ else ifeq ($(platform), emscripten)
+@@ -242,6 +242,23 @@ else ifeq ($(platform), emscripten)
     TARGET := $(TARGET_NAME)_libretro_$(platform).bc
     STATIC_LINKING = 1
  
@@ -35,7 +35,7 @@ index 9c0c4c6..c6f35cb 100644
  # Windows MSVC 2003 x86
  else ifeq ($(platform), windows_msvc2003_x86)
  	CC  = cl.exe
-@@ -291,7 +308,7 @@ OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
+@@ -294,7 +311,7 @@ OBJECTS := $(SOURCES_CXX:.cpp=.o) $(SOURCES_C:.c=.o)
  all: $(TARGET)
  
  ifeq ($(DEBUG),0)
@@ -44,6 +44,3 @@ index 9c0c4c6..c6f35cb 100644
  else
     FLAGS += -O0 -g -DDEBUG
  endif
--- 
-2.38.0
-

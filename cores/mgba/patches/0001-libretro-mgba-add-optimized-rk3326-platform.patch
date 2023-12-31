@@ -1,6 +1,6 @@
-From 423a91110f81c4249dc7ac7194b87c9f448a5283 Mon Sep 17 00:00:00 2001
+From 9547f165881e97502a52ef5c22ec92dd8d2f0908 Mon Sep 17 00:00:00 2001
 From: Shimizu Hikaru <MuPendulum@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:00:00 -0000
+Date: Sun, 31 Dec 2023 00:00:00 +0000
 Subject: [PATCH] libretro mgba: add optimized rk3326 platform
 
 ---
@@ -8,10 +8,10 @@ Subject: [PATCH] libretro mgba: add optimized rk3326 platform
  1 file changed, 18 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 108148f45..fff39ffc8 100644
+index 9cab7e4bd..3e1125210 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -417,6 +417,23 @@ else ifeq ($(platform), miyoo)
+@@ -419,6 +419,23 @@ else ifeq ($(platform), miyoo)
     CFLAGS += -fno-common -ftree-vectorize -funswitch-loops
     DEFINES += -std=c99
  
@@ -35,7 +35,7 @@ index 108148f45..fff39ffc8 100644
  # Windows
  else
     TARGET := $(TARGET_NAME)_libretro.dll
-@@ -429,7 +446,7 @@ endif
+@@ -431,7 +448,7 @@ endif
  ifeq ($(DEBUG), 1)
     CFLAGS += -O0 -g
  else
@@ -44,6 +44,3 @@ index 108148f45..fff39ffc8 100644
  endif
  
  DEFINES += -DHAVE_STRNDUP -DHAVE_STRDUP -DDISABLE_THREADING -DMINIMAL_CORE=2
--- 
-2.38.0
-
