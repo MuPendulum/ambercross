@@ -6,11 +6,11 @@ source ../../scripts/variables.sh
 
 sysroot_path="${HOME}/x-tools/aarch64-rg351-linux-gnu/aarch64-rg351-linux-gnu/sysroot"
 pkg_ver="1.2.13"
-src_url="https://www.zlib.net/zlib-${pkg_ver}.tar.xz"
+src_url="https://www.zlib.net/fossils/zlib-${pkg_ver}.tar.gz"
 
 # Download
 curl -SO "$src_url"
-tar -xJf "zlib-${pkg_ver}.tar.xz"
+tar -xzf "zlib-${pkg_ver}.tar.gz"
 
 cd zlib-"${pkg_ver}"
 
@@ -36,4 +36,4 @@ cd ../../../
 
 # Clean
 rm -rf zlib-"${pkg_ver}"
-rm -v "zlib-${pkg_ver}.tar.xz"
+rm -v "zlib-${pkg_ver}.tar.gz"
