@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 source ../../scripts/variables.sh
 
 sysroot_path="${HOME}/x-tools/aarch64-rg351-linux-gnu/aarch64-rg351-linux-gnu/sysroot"
-pkg_ver="1.2.13"
+pkg_ver="1.3.1"
 src_url="https://www.zlib.net/fossils/zlib-${pkg_ver}.tar.gz"
 
 # Download
