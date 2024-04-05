@@ -286,7 +286,7 @@ pcsxrearmed() {
     apply_patches
 
     make -f Makefile.libretro platform="$BUILD_PLATFORM" clean
-    make -f Makefile.libretro platform="$BUILD_PLATFORM"
+    make -f Makefile.libretro platform="$BUILD_PLATFORM" WANT_ZLIB=0
     strip_lib "$core_lib"
 
     copy_lib "$core_lib"

@@ -5,11 +5,11 @@ Subject: [PATCH] libretro pcsx rearmed: add optimized rk3326 platform
 
 ---
  Makefile          |  4 ++--
- Makefile.libretro | 18 ++++++++++++++++++
- 2 files changed, 20 insertions(+), 2 deletions(-)
+ Makefile.libretro | 19 +++++++++++++++++++
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 4786a922..ae1eca48 100644
+index 9b5d245b..f415732f 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -9,7 +9,7 @@ else
@@ -21,7 +21,7 @@ index 4786a922..ae1eca48 100644
  endif
  endif
  ifeq ($(DEBUG_ASAN), 1)
-@@ -244,7 +244,7 @@ ifeq "$(THREAD_RENDERING)" "1"
+@@ -246,7 +246,7 @@ ifeq "$(THREAD_RENDERING)" "1"
  CFLAGS += -DTHREAD_RENDERING
  OBJS += plugins/gpulib/gpulib_thread_if.o
  endif
@@ -31,12 +31,12 @@ index 4786a922..ae1eca48 100644
  endif
  
 diff --git a/Makefile.libretro b/Makefile.libretro
-index 1169d892..c5ccacc4 100644
+index d3a3530c..7304b6e5 100644
 --- a/Makefile.libretro
 +++ b/Makefile.libretro
-@@ -548,6 +548,24 @@ else ifeq ($(platform), emscripten)
-    DYNAREC =
+@@ -568,6 +568,25 @@ else ifeq ($(platform), emscripten)
     STATIC_LINKING = 1
+    HAVE_PHYSICAL_CDROM = 0
  
 +# RK3326 and RK3399 devices
 +else ifeq ($(platform),$(filter $(platform),rk3326 rk3399))
@@ -46,6 +46,7 @@ index 1169d892..c5ccacc4 100644
 +	BUILTIN_GPU = neon
 +	HAVE_NEON = 1
 +	DYNAREC = ari64
++	HAVE_PHYSICAL_CDROM = 0
 +	ifeq ($(platform), rk3326)
 +		CPUFLAGS := -mcpu=cortex-a35+crc+crypto --param l1-cache-size=32 --param l1-cache-line-size=64 --param l2-cache-size=256
 +	else ifeq ($(platform), rk3399)
